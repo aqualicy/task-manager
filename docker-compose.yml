@@ -1,0 +1,28 @@
+version: '3.8' # Specify Docker Compose file format version
+
+services:
+  backend:
+    build: . # Path to your Spring Boot Dockerfile, now in the main directory
+    container_name: task-manager-backend
+    ports:
+      - "8080:8080" # Map host port 8080 to container port 8080
+    networks:
+      - app-network # Connect to a custom network
+    # Optional: If your H2 database is file-based and you want it to persist across container restarts,
+    # you can mount a volume. Otherwise, data will be lost if the container is removed.
+    volumes:
+      - ./backend-data:/app/data # Mount a host directory to container's /app/data for H2 persistence
+
+  frontend:
+    build: ./ui # Path to your React app Dockerfile
+    container_name: task-manager-frontend
+    ports:
+      - "3000:80" # Map host port 3000 to container port 80 (Nginx default)
+    depends_on:
+      - backend # Ensure backend starts before frontend
+    networks:
+      - app-network # Connect to the same custom network as backend
+
+networks:
+  app-network:
+    driver: bridge # Define a custom bridge network for inter-container communication
