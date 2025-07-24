@@ -1,16 +1,50 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import logo from './logo.svg';
 import './App.css';
 import Table from "./components/Table";
+import TaskManagerService from "./services/task-manager-service";
+import {Task} from "./models/Task";
 
-interface Task {
-  id: string;
-  title: string;
-  description?: string;
-  status: 'TODO' | 'IN_PROGRESS' | 'DONE';
-}
+export default function App() {
 
-function App() {
+  const [tasks, setTasks] = useState<Task[] | undefined>(undefined);
+
+  /**
+   * Get Tasks
+   *
+   * @returns {void}
+   */
+  const getTasks = (): void => {
+    const service = new TaskManagerService();
+    // setLoading(true);
+    service
+        .GetTasks()
+        .then((response) => {
+          console.log(response);
+          setTasks(response.data);
+          // setLoading(false);
+        })
+        .catch((error) => {
+          console.log(error);
+          // setLoading(false);
+        });
+  };
+
+  /**
+   * Fetches and processes decision data using the `id` from the URL.
+   * @returns {Promise<void>} - A promise that resolves when the data fetching and processing are complete.
+   */
+  const fetchData = async () => {
+    // const searchParams = new URLSearchParams(window.location.search);
+    // const id = searchParams.get('id');
+    if (!tasks) {
+      getTasks();
+    }
+  };
+
+  useEffect(() => {
+    fetchData().then();
+  }, [fetchData]);
 
   const columns = [
     { Header: 'Name', accessor: 'name' },
@@ -36,5 +70,3 @@ function App() {
     </div>
   );
 }
-
-export default App;
