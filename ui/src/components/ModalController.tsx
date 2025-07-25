@@ -24,10 +24,6 @@ export default function ModalController() {
         setNewTask(new Task)
     };
 
-    const updateTask = (task: Task) => {
-
-    };
-
     const handleOnClick = () => {
         if (isAddingTask) {
             const service = new TaskManagerService();
@@ -66,8 +62,7 @@ export default function ModalController() {
                 {isAddingTask && 'Add Task'}
                 {editingTask && 'Edit Task'}
             </h2>
-            {isAddingTask && <ModalContent task={newTask} setNewTask={setNewTask}/>}
-            {editingTask && <ModalContent task={newTask} setNewTask={setNewTask}/>}
+            {(isAddingTask || editingTask) && <ModalContent task={newTask} setNewTask={setNewTask}/>}
             <div>
                 <button onClick={handleCloseModal}>Cancel</button>
                 <button

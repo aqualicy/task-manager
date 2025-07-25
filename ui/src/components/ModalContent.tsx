@@ -15,23 +15,6 @@ export default function ModalContent({task, setNewTask}: { task: Task, setNewTas
     const [description, setDescription] = useState(editingTask?.description || task.description || '');
     const [status, setStatus] = useState(editingTask?.status || task.status || '');
 
-    // const updateTask = (task: Task) => {
-    //     const service = new TaskManagerService();
-    //     service
-    //         .UpdateTask(task)
-    //         .then(() => service.GetTasks())
-    //         .then((response) => {
-    //             setTasks(response.data);
-    //         })
-    //         .finally(() => {
-    //             setIsModalOpen(false);
-    //             setIsEditingTask(false);
-    //         })
-    //         .catch((error) => {
-    //             console.error('Error updating task:', error);
-    //         })
-    // };
-
     const handleTitleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setTitle(event.target.value);
         setNewTask({
@@ -86,7 +69,7 @@ export default function ModalContent({task, setNewTask}: { task: Task, setNewTas
             <div className="modal-content-child">
                 <label htmlFor="Status">Status</label>
                 <select id="Status" value={status} onChange={(e) => handleStatusChange(e)}>
-                    <option value="">Select an option</option>
+                    {!status && <option value="">Select an option</option>}
                     {taskStatusList.map((taskStatus) => (
                         <option key={taskStatus} value={taskStatus}>
                             {taskStatus}

@@ -27,8 +27,8 @@ function TaskStatusDropdown({ task }: { task: Task }) {
     };
 
     return (
-        <select value={task.status} onChange={(e) => handleChange(e)}>
-            <option value="">Select an option</option>
+        <select value={task.status || ''} onChange={(e) => handleChange(e)}>
+            {!task.status && <option value="">Select an option</option>}
             {taskStatusList.map((taskStatus) => (
                 <option key={taskStatus} value={taskStatus}>
                     {taskStatus}
