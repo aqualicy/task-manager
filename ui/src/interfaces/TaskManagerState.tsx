@@ -1,4 +1,5 @@
 import {Task} from "../models/Task";
+import TaskManagerService from "../services/task-manager-service";
 
 export type HeaderColumn = {
     header: string;
@@ -15,4 +16,5 @@ export interface TaskManagerState {
     setIsModalOpen: (isModalOpen: boolean) => void,
     tasks: Task[],
     setTasks: (tasks: Task[]) => void,
+    service: TaskManagerService;
 }

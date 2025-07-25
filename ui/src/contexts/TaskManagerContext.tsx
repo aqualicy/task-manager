@@ -1,15 +1,18 @@
 import React, {createContext, ReactNode, useContext, useState,} from 'react';
 import {HeaderColumn, TaskManagerState} from "../interfaces/TaskManagerState";
 import {Task} from "../models/Task";
+import TaskManagerService from "../services/task-manager-service";
 
 const TaskManagerContext = createContext<TaskManagerState | undefined>(
     undefined,
 );
 
 export const TaskManagerProvider = ({
+                                        service,
                                         children,
                                     }: {
     children: ReactNode;
+    service: TaskManagerService;
 }) => {
     const [tasks, setTasks] = useState<Task[]>([]);
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -37,6 +40,7 @@ export const TaskManagerProvider = ({
                 setIsModalOpen,
                 tasks,
                 setTasks,
+                service,
             }}
         >
             {children}

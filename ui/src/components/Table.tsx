@@ -6,14 +6,13 @@ import {Task} from "../models/Task";
 import TableRow from "./TableRow";
 
 const Table = () => {
-    const {tasks, setTasks} = useTaskManagerContext();
+    const {tasks, setTasks, service} = useTaskManagerContext();
     /**
      * Get Tasks
      *
      * @returns {void}
      */
     const getTasks = (): void => {
-        const service = new TaskManagerService();
         // setLoading(true);
         service
             .GetTasks()

@@ -1,16 +1,14 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {Task, TaskStatus} from "../../models/Task";
-import TaskManagerService from "../../services/task-manager-service";
 import {useTaskManagerContext} from "../../contexts/TaskManagerContext";
 
 function TaskStatusDropdown({ task }: { task: Task }) {
-    const { setTasks } = useTaskManagerContext();
+    const { setTasks, service } = useTaskManagerContext();
     const taskStatusList = Object.keys(TaskStatus).filter(
         (key) => isNaN(Number(key))
     );
 
     const updateTaskStatus = (status: string) => {
-        const service = new TaskManagerService();
         service
             .UpdateTaskStatus(task.id, status)
             .then(() => service.GetTasks())

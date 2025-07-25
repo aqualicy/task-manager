@@ -4,10 +4,9 @@ import TaskManagerService from "../../services/task-manager-service";
 import {useTaskManagerContext} from "../../contexts/TaskManagerContext";
 
 const DeleteButton = ({ task }: { task: Task }) => {
-    const { isModalOpen, setTasks } = useTaskManagerContext()
+    const { isModalOpen, setTasks, service } = useTaskManagerContext()
 
     const handleOnDelete = async (task: Task) => {
-        const service = new TaskManagerService();
         try {
             await service.DeleteTask(task.id);
             const response = await service.GetTasks();

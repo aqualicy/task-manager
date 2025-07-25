@@ -4,13 +4,15 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import {TaskManagerProvider} from "./contexts/TaskManagerContext";
+import TaskManagerService from "./services/task-manager-service";
 
 const root = ReactDOM.createRoot(
     document.getElementById('root') as HTMLElement
 );
+const service = new TaskManagerService();
 root.render(
     <React.StrictMode>
-        <TaskManagerProvider>
+        <TaskManagerProvider service={service}>
             <App/>
         </TaskManagerProvider>
     </React.StrictMode>

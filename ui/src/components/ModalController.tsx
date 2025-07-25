@@ -3,7 +3,6 @@ import {useTaskManagerContext} from "../contexts/TaskManagerContext";
 import Modal from "./Modal";
 import ModalContent from "./ModalContent";
 import {Task} from "../models/Task";
-import TaskManagerService from "../services/task-manager-service";
 
 export default function ModalController() {
     const {
@@ -14,6 +13,7 @@ export default function ModalController() {
         isModalOpen,
         setIsModalOpen,
         setTasks,
+        service,
     } = useTaskManagerContext();
     const [newTask, setNewTask] = useState<Task>(new Task);
 
@@ -26,7 +26,6 @@ export default function ModalController() {
 
     const handleOnClick = () => {
         if (isAddingTask) {
-            const service = new TaskManagerService();
             service
                 .AddTask(newTask)
                 .then(() => service.GetTasks())
@@ -40,7 +39,6 @@ export default function ModalController() {
                     console.error('Error adding task:', error);
                 });
         } else if (editingTask) {
-            const service = new TaskManagerService();
             service
                 .UpdateTask(newTask)
                 .then(() => service.GetTasks())
