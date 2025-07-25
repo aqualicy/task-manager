@@ -85,7 +85,7 @@ class HttpService {
         record: any,
         logProperties: any,
     ): Promise<AxiosResponse> {
-        return this.instance.put(url, record, logProperties);
+        return this.instance.patch(url, record, logProperties);
     }
 
     /**

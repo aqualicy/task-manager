@@ -75,9 +75,9 @@ class TaskManagerService {
    */
   async UpdateTaskStatus(
       id: string,
-      status: TaskStatus,
+      status: string,
   ): Promise<AxiosResponse<Task>> {
-    return this.service.patch(`/${id}/status`, status, {
+    return this.service.patch(`/${id}/status`, {status: status}, {
       logProps: {
         name: 'UpdateTaskStatus',
         metadata: { id, status },

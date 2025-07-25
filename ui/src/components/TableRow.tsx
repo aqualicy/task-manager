@@ -3,6 +3,7 @@ import {Task} from '../models/Task';
 import {useTaskManagerContext} from "../contexts/TaskManagerContext";
 import EditButton from "./buttons/EditButton";
 import DeleteButton from "./buttons/DeleteButton";
+import TaskStatusDropdown from "./dropdowns/TaskStatusDropdown";
 
 const TableRow = ({ task }: { task: Task }) => {
     const { headerColumns } = useTaskManagerContext()
@@ -13,6 +14,8 @@ const TableRow = ({ task }: { task: Task }) => {
                 return <EditButton task={task} />;
             case 'delete':
                 return <DeleteButton task={task} />
+            case 'status':
+                return <TaskStatusDropdown task={task}/>;
             default:
                 return task[accessor as keyof Task] || '';
         }
