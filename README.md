@@ -256,3 +256,53 @@ You can access the H2 database console to inspect the database and its data dire
 4.  Click `Connect`.
 
 You can now browse the `TASK` table and execute SQL queries.
+
+## Running with Docker Compose
+
+Docker Compose allows you to build, run, and manage both your backend and frontend services together with a single command.
+
+1.  **Build Frontend Assets:**
+    Navigate to your `ui/` directory in the terminal and run:
+    ```bash
+    yarn build
+    ```
+    This compiles your React application into static files.
+
+2.  **Build Backend JAR:**
+    Navigate to the **main project directory** (the parent of `ui/`) in the terminal and run:
+    ```bash
+    mvn clean install
+    # OR for Gradle:
+    # ./gradlew clean build
+    ```
+    This packages your Spring Boot application into an executable JAR.
+
+3.  **Run Docker Compose:**
+    Navigate back to the **main project directory** (where `docker-compose.yml` is located) and run:
+    ```bash
+    docker compose up --build
+    ```
+  * `docker compose up`: Starts the services defined in `docker-compose.yml`.
+  * `--build`: Ensures Docker Compose builds (or rebuilds) the images if they don't exist or if their source code has changed.
+
+    This command will:
+  * Build the `backend` image using the `Dockerfile` in the current directory.
+  * Build the `frontend` image using the `Dockerfile` in the `ui/` directory.
+  * Start both containers.
+
+### Accessing the Applications:
+
+* **Frontend UI:** Open your browser to `http://localhost:3000`
+* **Backend API:** The API is running inside the container on port 8080. You can access it from your host at `http://localhost:8080`.
+* **H2 Console:** `http://localhost:8080/h2-console` (remember to use `jdbc:h2:file:/app/data/taskdb` as the JDBC URL in the console, as that's the path *inside the container's volume*).
+
+### Stopping and Cleaning Up:
+
+To stop the containers and remove them (but keep the volumes/data if mapped):
+```bash
+docker compose down
+```
+To stop and remove containers AND volumes (which means H2 data will be lost):
+```bash
+docker compose down -v
+```
