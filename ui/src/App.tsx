@@ -3,7 +3,6 @@ import './App.css';
 import Table from "./components/Table";
 import {useTaskManagerContext} from "./contexts/TaskManagerContext";
 import ModalController from "./components/ModalController";
-import TaskStatusDropdown from "./components/dropdowns/TaskStatusDropdown";
 
 export default function App() {
     const { setIsAddingTask, setIsModalOpen } = useTaskManagerContext();
