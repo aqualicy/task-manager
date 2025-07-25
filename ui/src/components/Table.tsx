@@ -1,38 +1,61 @@
-import React from 'react';
+import React, {useEffect} from 'react';
+import TaskManagerService from "../services/task-manager-service";
+import {useTaskManagerContext} from "../contexts/TaskManagerContext";
+import TableHeaders from "./TableHeaders";
+import {Task} from "../models/Task";
+import TableRow from "./TableRow";
 
-// @ts-ignore
-const Table = ({ columns, data }) => {
+const Table = () => {
+    const { tasks, setTasks } = useTaskManagerContext();
+
+    /**
+     * Get Tasks
+     *
+     * @returns {void}
+     */
+    const getTasks = (): void => {
+        const service = new TaskManagerService();
+        // setLoading(true);
+        service
+            .GetTasks()
+            .then((response) => {
+                console.log(response);
+                setTasks(response.data);
+                // setLoading(false);
+            })
+            .catch((error) => {
+                console.log(error);
+                // setLoading(false);
+            });
+    };
+
+    /**
+     * Fetches and processes decision data using the `id` from the URL.
+     * @returns {Promise<void>} - A promise that resolves when the data fetching and processing are complete.
+     */
+    const fetchData = async () => {
+        // const searchParams = new URLSearchParams(window.location.search);
+        // const id = searchParams.get('id');
+        if (!tasks || tasks.length === 0) {
+            getTasks();
+        }
+    };
+
+    useEffect(() => {
+        fetchData().then();
+    }, [fetchData]);
+
     return (
-        <div className="overflow-x-auto">
-            <table className="min-w-full bg-white border border-gray-200">
-                <thead>
-                <tr>
-                    {columns.map((column: any, index: any) => (
-                        <th
-                            key={index}
-                            className="py-3 px-4 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider border-b border-gray-200"
-                        >
-                            {column.Header}
-                        </th>
-                    ))}
-                </tr>
-                </thead>
-                <tbody>
-                {data.map((row: any, rowIndex: any) => (
-                    <tr key={rowIndex} className="hover:bg-gray-50">
-                        {columns.map((column: any, colIndex: any) => (
-                            <td
-                                key={colIndex}
-                                className="py-3 px-4 whitespace-nowrap text-sm text-gray-700 border-b border-gray-200"
-                            >
-                                {row[column.accessor]}
-                            </td>
-                        ))}
-                    </tr>
+        <table>
+            <thead>
+                <TableHeaders />
+            </thead>
+            <tbody>
+                {tasks?.map((task: Task) => (
+                    <TableRow task={task} key={task.id}/>
                 ))}
-                </tbody>
-            </table>
-        </div>
+            </tbody>
+        </table>
     );
 };
 

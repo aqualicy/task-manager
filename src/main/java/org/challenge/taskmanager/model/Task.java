@@ -27,7 +27,6 @@ public class Task {
 
     private String description;
 
-    @NotNull(message = "Status cannot be null")
     private TaskStatus status;
 
     public Task(String title, String description, TaskStatus status) {

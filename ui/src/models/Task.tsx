@@ -11,5 +11,5 @@ export class Task {
 
     description?: string | null;
 
-    status!: TaskStatus;
+    status?: TaskStatus;
 }
