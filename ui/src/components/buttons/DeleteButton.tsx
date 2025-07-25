@@ -1,6 +1,5 @@
 import React from 'react';
 import {Task} from '../../models/Task';
-import TaskManagerService from "../../services/task-manager-service";
 import {useTaskManagerContext} from "../../contexts/TaskManagerContext";
 
 const DeleteButton = ({ task }: { task: Task }) => {

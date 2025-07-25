@@ -1,5 +1,4 @@
 import React, {useEffect} from 'react';
-import TaskManagerService from "../services/task-manager-service";
 import {useTaskManagerContext} from "../contexts/TaskManagerContext";
 import TableHeaders from "./TableHeaders";
 import {Task} from "../models/Task";
@@ -13,34 +12,24 @@ const Table = () => {
      * @returns {void}
      */
     const getTasks = (): void => {
-        // setLoading(true);
         service
             .GetTasks()
             .then((response) => {
                 console.log(response);
                 setTasks(response.data);
-                // setLoading(false);
             })
             .catch((error) => {
                 console.log(error);
-                // setLoading(false);
             });
     };
 
-    /**
-     * Fetches and processes decision data using the `id` from the URL.
-     * @returns {Promise<void>} - A promise that resolves when the data fetching and processing are complete.
-     */
-    const fetchData = async () => {
-        // const searchParams = new URLSearchParams(window.location.search);
-        // const id = searchParams.get('id');
-        if (!tasks || tasks.length === 0) {
-            getTasks();
-        }
-    };
-
-
     useEffect(() => {
+        const fetchData = async () => {
+            if (!tasks || tasks.length === 0) {
+                getTasks();
+            }
+        };
+
         fetchData().then();
     }, []);
 
