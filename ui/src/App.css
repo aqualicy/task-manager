@@ -13,3 +13,9 @@
   background: lightcoral;
   cursor: pointer;
 }
+
+.modal-content-child {
+  display: flex;
+  justify-content: space-between;
+  padding-bottom: .5rem;
+}

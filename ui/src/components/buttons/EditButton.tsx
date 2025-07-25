@@ -4,29 +4,11 @@ import TaskManagerService from "../../services/task-manager-service";
 import {useTaskManagerContext} from "../../contexts/TaskManagerContext";
 
 const EditButton = ({ task }: { task: Task }) => {
-    const { isModalOpen, setIsEditingTask, setIsModalOpen, setTasks } = useTaskManagerContext()
-
-    const updateTask = (task: Task) => {
-        const service = new TaskManagerService();
-        service
-            .UpdateTask(task)
-            .then(() => service.GetTasks())
-            .then((response) => {
-                setTasks(response.data);
-            })
-            .finally(() => {
-                setIsModalOpen(false);
-                setIsEditingTask(false);
-            })
-            .catch((error) => {
-                console.error('Error updating task:', error);
-            })
-    };
+    const { isModalOpen, setEditingTask, setIsModalOpen } = useTaskManagerContext()
 
     const handleOnEdit = (task: Task) => {
-        setIsEditingTask(true);
+        setEditingTask(task);
         setIsModalOpen(true);
-        // updateTask(task);
     }
 
     return (

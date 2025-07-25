@@ -7,7 +7,6 @@ import TableRow from "./TableRow";
 
 const Table = () => {
     const { tasks, setTasks } = useTaskManagerContext();
-
     /**
      * Get Tasks
      *
@@ -40,6 +39,7 @@ const Table = () => {
             getTasks();
         }
     };
+
 
     useEffect(() => {
         fetchData().then();

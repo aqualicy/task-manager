@@ -1,33 +1,81 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {useTaskManagerContext} from "../contexts/TaskManagerContext";
 import Modal from "./Modal";
+import ModalContent from "./ModalContent";
+import {Task} from "../models/Task";
+import TaskManagerService from "../services/task-manager-service";
 
 export default function ModalController() {
     const {
         isAddingTask,
         setIsAddingTask,
-        isEditingTask,
-        setIsEditingTask,
+        editingTask,
+        setEditingTask,
         isModalOpen,
-        setIsModalOpen
+        setIsModalOpen,
+        setTasks,
     } = useTaskManagerContext();
+    const [newTask, setNewTask] = useState<Task>(new Task);
 
     const handleCloseModal = () => {
         setIsAddingTask(false);
-        setIsEditingTask(false);
+        setEditingTask(undefined);
         setIsModalOpen(false);
+        setNewTask(new Task)
     };
+
+    const updateTask = (task: Task) => {
+
+    };
+
+    const handleOnClick = () => {
+        if (isAddingTask) {
+            const service = new TaskManagerService();
+            service
+                .AddTask(newTask)
+                .then(() => service.GetTasks())
+                .then((response) => {
+                    setTasks(response.data);
+                })
+                .finally(() => {
+                    handleCloseModal();
+                })
+                .catch((error) => {
+                    console.error('Error adding task:', error);
+                });
+        } else if (editingTask) {
+            const service = new TaskManagerService();
+            service
+                .UpdateTask(newTask)
+                .then(() => service.GetTasks())
+                .then((response) => {
+                    setTasks(response.data);
+                })
+                .finally(() => {
+                    handleCloseModal();
+                })
+                .catch((error) => {
+                    console.error('Error updating task:', error);
+                });
+        }
+    }
 
     return (
         <Modal isOpen={isModalOpen} onClose={handleCloseModal}>
-            <h2>Create Task</h2>
-            {isAddingTask && <p>Adding a new task...</p>}
-            {isEditingTask && <p>Editing a task...</p>}
+            <h2>
+                {isAddingTask && 'Add Task'}
+                {editingTask && 'Edit Task'}
+            </h2>
+            {isAddingTask && <ModalContent task={newTask} setNewTask={setNewTask}/>}
+            {editingTask && <ModalContent task={newTask} setNewTask={setNewTask}/>}
             <div>
                 <button onClick={handleCloseModal}>Cancel</button>
-                <button onClick={handleCloseModal}>
+                <button
+                    onClick={handleOnClick}
+                    disabled={!newTask.id && !newTask.title}
+                >
                     {isAddingTask && 'Add'}
-                    {isEditingTask && 'Save'}
+                    {editingTask && 'Save'}
                 </button>
             </div>
         </Modal>

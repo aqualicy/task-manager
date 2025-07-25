@@ -9,8 +9,6 @@ function TaskStatusDropdown({ task }: { task: Task }) {
         (key) => isNaN(Number(key))
     );
 
-    const [selectedValue, setSelectedValue] = useState(task.status || ''); // State to control dropdown visibility
-
     const updateTaskStatus = (status: string) => {
         const service = new TaskManagerService();
         service
@@ -19,12 +17,8 @@ function TaskStatusDropdown({ task }: { task: Task }) {
             .then((response) => {
                 setTasks(response.data);
             })
-            .finally(() => {
-                setSelectedValue(status);
-            })
             .catch((error) => {
                 console.error('Error updating task status:', error);
-                setSelectedValue(task.status?.toString() || '');
             })
     };
 
@@ -33,7 +27,7 @@ function TaskStatusDropdown({ task }: { task: Task }) {
     };
 
     return (
-        <select value={selectedValue} onChange={(e) => handleChange(e)}>
+        <select value={task.status} onChange={(e) => handleChange(e)}>
             <option value="">Select an option</option>
             {taskStatusList.map((taskStatus) => (
                 <option key={taskStatus} value={taskStatus}>

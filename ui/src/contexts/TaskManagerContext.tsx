@@ -14,7 +14,7 @@ export const TaskManagerProvider = ({
     const [tasks, setTasks] = useState<Task[]>([]);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isAddingTask, setIsAddingTask] = useState(false);
-    const [isEditingTask, setIsEditingTask] = useState(false);
+    const [editingTask, setEditingTask] = useState<Task | undefined>(undefined);
 
     // TODO: Fetch static headers from BE config
     const headerColumns: HeaderColumn[] = [
@@ -31,8 +31,8 @@ export const TaskManagerProvider = ({
                 headerColumns,
                 isAddingTask,
                 setIsAddingTask,
-                isEditingTask,
-                setIsEditingTask,
+                editingTask,
+                setEditingTask,
                 isModalOpen,
                 setIsModalOpen,
                 tasks,
