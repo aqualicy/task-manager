@@ -46,16 +46,18 @@ const Table = () => {
     }, [fetchData]);
 
     return (
-        <table>
-            <thead>
+        <div>
+            <table style={{ borderSpacing: '1rem' }}>
+                <thead>
                 <TableHeaders />
-            </thead>
-            <tbody>
+                </thead>
+                <tbody>
                 {tasks?.map((task: Task) => (
                     <TableRow task={task} key={task.id}/>
                 ))}
-            </tbody>
-        </table>
+                </tbody>
+            </table>
+        </div>
     );
 };
 

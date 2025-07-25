@@ -1,30 +1,49 @@
 import React, {createContext, ReactNode, useContext, useState,} from 'react';
-import {TaskManagerState} from "../interfaces/TaskManagerState";
+import {HeaderColumn, TaskManagerState} from "../interfaces/TaskManagerState";
 import {Task} from "../models/Task";
 
 const TaskManagerContext = createContext<TaskManagerState | undefined>(
-  undefined,
+    undefined,
 );
 
 export const TaskManagerProvider = ({
-  children,
-}: {
-  children: ReactNode;
+                                        children,
+                                    }: {
+    children: ReactNode;
 }) => {
-  const [tasks, setTasks] = useState<Task[]>([]);
+    const [tasks, setTasks] = useState<Task[]>([]);
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [isAddingTask, setIsAddingTask] = useState(false);
+    const [isEditingTask, setIsEditingTask] = useState(false);
 
-  return (
-    <TaskManagerContext.Provider
-      value={{
-        tasks,
-        setTasks,
-      }}
-    >
-      {children}
-    </TaskManagerContext.Provider>
-  );
+    // TODO: Fetch static headers from BE config
+    const headerColumns: HeaderColumn[] = [
+        {header: '', accessor: 'edit'},
+        {header: 'Title', accessor: 'title'},
+        {header: 'Description', accessor: 'description'},
+        {header: 'Status', accessor: 'status'},
+        {header: '', accessor: 'delete'},
+    ];
+
+    return (
+        <TaskManagerContext.Provider
+            value={{
+                headerColumns,
+                isAddingTask,
+                setIsAddingTask,
+                isEditingTask,
+                setIsEditingTask,
+                isModalOpen,
+                setIsModalOpen,
+                tasks,
+                setTasks,
+            }}
+        >
+            {children}
+        </TaskManagerContext.Provider>
+    );
 };
 
 export const useTaskManagerContext = (): TaskManagerState => {
-  return useContext(TaskManagerContext) as TaskManagerState;
+    return useContext(TaskManagerContext) as TaskManagerState;
 };

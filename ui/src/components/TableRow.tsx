@@ -1,25 +1,28 @@
 import React from 'react';
-import { Task } from '../models/Task';
-
-type HeaderColumn = {
-    header: string;
-    accessor?: keyof Task;
-};
+import {Task} from '../models/Task';
+import {useTaskManagerContext} from "../contexts/TaskManagerContext";
+import EditButton from "./buttons/EditButton";
+import DeleteButton from "./buttons/DeleteButton";
 
 const TableRow = ({ task }: { task: Task }) => {
-    // TODO: Fetch static headers from BE config
-    const headerColumns: HeaderColumn[] = [
-        { header: 'Title', accessor: 'title' },
-        { header: 'Description', accessor: 'description' },
-        { header: 'Status', accessor: 'status' },
-        { header: 'Actions', accessor: undefined },
-    ];
+    const { headerColumns } = useTaskManagerContext()
+
+    const columnMapper = (task: Task, accessor: keyof Task | string) => {
+        switch (accessor){
+            case 'edit':
+                return <EditButton task={task} />;
+            case 'delete':
+                return <DeleteButton task={task} />
+            default:
+                return task[accessor as keyof Task] || '';
+        }
+    };
 
     return (
         <tr>
             {headerColumns.map((column) => (
-                <td key={column.header}>
-                    {column.accessor ? task[column.accessor] : '[action buttons]'}
+                <td key={column.accessor}>
+                    {columnMapper(task, column.accessor)}
                 </td>
             ))}
         </tr>

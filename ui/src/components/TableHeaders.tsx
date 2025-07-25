@@ -1,20 +1,13 @@
-import React, {useEffect, useState} from 'react';
-import {Task} from "../models/Task";
-import TaskManagerService from "../services/task-manager-service";
+import React from 'react';
+import {useTaskManagerContext} from "../contexts/TaskManagerContext";
 
 const TableHeaders = () => {
-    // TODO: Fetch static headers from BE config
-    const headerColumns = [
-        {header: 'Title', accessor: 'title'},
-        {header: 'Description', accessor: 'description'},
-        {header: 'Status', accessor: 'status'},
-        {header: 'Actions'},
-    ];
+    const { headerColumns } = useTaskManagerContext();
 
     return (
         <tr>
             {headerColumns.map((column: any) => (
-                <th key={column.header}>
+                <th key={column.accessor}>
                     {column.header}
                 </th>
             ))}
