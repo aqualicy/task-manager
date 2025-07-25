@@ -6,7 +6,7 @@ import {Task} from "../models/Task";
 import TableRow from "./TableRow";
 
 const Table = () => {
-    const { tasks, setTasks } = useTaskManagerContext();
+    const {tasks, setTasks} = useTaskManagerContext();
     /**
      * Get Tasks
      *
@@ -43,20 +43,28 @@ const Table = () => {
 
     useEffect(() => {
         fetchData().then();
-    }, [fetchData]);
+    }, []);
 
     return (
         <div>
-            <table style={{ borderSpacing: '1rem' }}>
-                <thead>
-                <TableHeaders />
-                </thead>
-                <tbody>
-                {tasks?.map((task: Task) => (
-                    <TableRow task={task} key={task.id}/>
-                ))}
-                </tbody>
-            </table>
+            {tasks.length > 0 ? (
+                <table style={{borderSpacing: '1rem'}}>
+                    <thead>
+                    <TableHeaders/>
+                    </thead>
+                    <tbody>
+                    {tasks?.map((task: Task) => (
+                        <TableRow task={task} key={task.id}/>
+                    ))}
+                    </tbody>
+                </table>
+            ) : (
+                <p>
+                    <i>These are not the tasks you are looking for.</i>
+                    <br/><br/>
+                    Please add a task to get started.
+                </p>
+            )}
         </div>
     );
 };
