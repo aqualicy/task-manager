@@ -70,6 +70,38 @@ class HttpService {
     ): Promise<AxiosResponse> {
         return this.instance.put(url, record, logProperties);
     }
+
+    /**
+     * Make a patch call
+     *
+     * @async
+     * @returns {Promise<AxiosResponse>} response
+     * @param url
+     * @param record
+     * @param logProperties
+     */
+    async patch(
+        url: string,
+        record: any,
+        logProperties: any,
+    ): Promise<AxiosResponse> {
+        return this.instance.put(url, record, logProperties);
+    }
+
+    /**
+     * Make a delete call
+     *
+     * @async
+     * @returns {Promise<AxiosResponse>} response
+     * @param url
+     * @param logProperties
+     */
+    async delete(
+        url: string,
+        logProperties: any,
+    ): Promise<AxiosResponse> {
+        return this.instance.delete(url, logProperties);
+    }
 }
 
 export default HttpService;
