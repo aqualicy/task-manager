@@ -3,6 +3,8 @@ package org.challenge.taskmanager.service;
 import org.challenge.taskmanager.model.Task;
 import org.challenge.taskmanager.model.TaskStatus;
 import org.challenge.taskmanager.repository.TaskRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -28,11 +30,15 @@ public class TaskService {
     }
 
     /**
-     * Fetches all tasks.
-     * @return A list of all tasks.
+     * Fetches tasks with pagination, sorting, and optional filtering by keyword and status.
+     *
+     * @param keyword Optional keyword to search in title or description.
+     * @param status Optional TaskStatus to filter by.
+     * @param pageable Pagination and sorting information.
+     * @return A Page of matching tasks.
      */
-    public List<Task> getAllTasks() {
-        return taskRepository.findAll();
+    public Page<Task> getTasks(String keyword, TaskStatus status, Pageable pageable) {
+        return taskRepository.findByKeywordAndStatus(keyword, status, pageable);
     }
 
     /**

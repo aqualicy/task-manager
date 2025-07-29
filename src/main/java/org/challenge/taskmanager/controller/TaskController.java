@@ -6,6 +6,9 @@ import org.challenge.taskmanager.model.TaskStatus;
 import org.challenge.taskmanager.service.TaskService;
 import org.challenge.taskmanager.exception.TaskNotFoundException;
 import jakarta.validation.Valid;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -37,13 +40,20 @@ public class TaskController {
     }
 
     /**
-     * Endpoint to fetch all tasks.
-     * GET /api/tasks
-     * @return ResponseEntity with a list of all tasks and HTTP status 200 (OK).
+     * Endpoint to fetch tasks with pagination, sorting, and optional filtering.
+     * GET /api/tasks?page=0&size=10&sort=title,asc&keyword=buy&status=TODO
+     *
+     * @param keyword Optional keyword to search in title or description.
+     * @param status Optional TaskStatus to filter by.
+     * @param pageable Pagination and sorting information. Default to page 0, size 20, unsorted.
+     * @return ResponseEntity with a Page of tasks and HTTP status 200 (OK).
      */
     @GetMapping
-    public ResponseEntity<List<Task>> getAllTasks() {
-        List<Task> tasks = taskService.getAllTasks();
+    public ResponseEntity<Page<Task>> getTasks(
+            @RequestParam(required = false) String keyword,
+            @RequestParam(required = false) TaskStatus status,
+            @PageableDefault(page = 0, size = 20) Pageable pageable) {
+        Page<Task> tasks = taskService.getTasks(keyword, status, pageable);
         return new ResponseEntity<>(tasks, HttpStatus.OK);
     }
 
