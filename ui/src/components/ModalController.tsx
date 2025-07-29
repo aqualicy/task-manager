@@ -65,7 +65,7 @@ export default function ModalController() {
                 <button onClick={handleCloseModal}>Cancel</button>
                 <button
                     onClick={handleOnClick}
-                    disabled={!newTask.id && !newTask.title}
+                    disabled={!newTask.title || newTask.title === ''}
                 >
                     {isAddingTask && 'Add'}
                     {editingTask && 'Save'}
